@@ -48,6 +48,22 @@ class AdminController extends Controller
     }
     }
 
+    public function delete_reservation($id)
+    {
+        
+        $reservation = Reservation::find($id);
+    
+        if ($reservation) {
+            $reservation->delete();
+            return redirect()->back()->with('success', 'Reservation deleted successfully!');
+        } else {
+            return redirect()->back()->with('error', 'Reservation not found.');
+        }
+    }
+    
+    
+
+
     public function delete_menu_item($id)
     {
         $menuItem = Menu::find($id);
@@ -110,10 +126,10 @@ class AdminController extends Controller
     public function submit(Request $request){
 
         $request->validate([
-            'photo' => 'nullable|image|max:2048', //2 MB (2048 KB)
-            'dish_name' => 'required|string|max:15',
+            'photo' => 'nullable|max:2048', //2 MB (2048 KB)
+            'dish_name' => 'required|string|max:30',
             'price' => 'required|numeric',
-            'description' => 'required|string',
+            'description' => 'required|min:10|string',
         ]);
     
         $data = new Menu;
@@ -162,15 +178,16 @@ class AdminController extends Controller
     
 public function delete_review($id)
 {
-  $review = Review::find($id);
+    $review = Review::find($id);
 
-  if ($review) {
-    $review->delete();
-    return redirect()->back()->with('success', 'Review deleted successfully!');
-  } else {
-    return redirect()->back()->with('error', 'Review not found.');
-  }
+    if ($review) {
+        $review->delete();
+        return redirect()->back()->with('success', 'Review deleted successfully!');
+    } else {
+        return redirect()->back()->with('error', 'Review not found.');
+    }
 }
+
 
 
 // reservation

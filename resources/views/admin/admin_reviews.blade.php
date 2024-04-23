@@ -33,9 +33,10 @@
         <td class="hide-on-small-screen">{{ $review->email }}</td>
         <td>{{ Str::limit($review->message, 1000) }}</td>
         <td>
-          @csrf
+          
           <form action="{{ route('delete_review', $review->id) }}" method="POST">
-            @method('DELETE')
+          @csrf
+          @method('DELETE')
             <button type="submit" class="btn btn-delete">Delete</button>
           </form>
         </td>

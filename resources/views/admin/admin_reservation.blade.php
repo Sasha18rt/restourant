@@ -21,6 +21,7 @@
             <th>Date</th>
             <th>Time</th>
             <th>Message</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,16 @@
             <td>{{ $reservation->date }}</td>
             <td>{{ $reservation->time }}</td>
             <td>{{ $reservation->message }}</td>
+            <td>
+  <form action="{{ route('delete_reservation', $reservation->id) }}" method="POST">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-delete-user">Delete</button>
+  </form>
+</td>
+
+
+
         </tr>
         @endforeach
     </tbody>

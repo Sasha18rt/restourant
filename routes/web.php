@@ -18,8 +18,6 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/',  [MainController::class, 'home'])->name('home');
 
-Route::get('/about', [MainController::class, 'about'])->name('about');
-
 Route::get('/review', [MainController::class, 'review'])->name('review');
 
 Route::get('/nreview', [MainController::class, 'navigation'])->name('nreview');
@@ -30,12 +28,14 @@ Route::get('/dashboard', [MainController::class, 'home'])->name('dashboard');
 
 Route::post('/reservation', [MainController::class, 'reservation'])->name('reservation');
 
+
 Route::get('/api', [MainController::class, 'api'])->name('api');
 
 
 
 Route::get('/deleteuser/{id}',  [AdminController::class, 'delete_user'])->name('delete_user');
 Route::get('/search-users', [AdminController::class, 'searchUsers'])->name('search.users');
+Route::get('/users', [AdminController::class, 'ausers'])->name('admin_users');
 
 Route::get('/menu',  [AdminController::class, 'amenu'])->name('admin_menu');
 
@@ -46,13 +46,9 @@ Route::get('/search_review', [AdminController::class, 'search_review'])->name('s
 
 
 Route::get('/areservation', [AdminController::class, 'areservation'])->name('admin_reservation');
+Route::delete('/delete_reservation/{id}',  [AdminController::class, 'delete_reservation'])->name('delete_reservation');
 
 Route::get('/delete_menu_item/{id}', [AdminController::class, 'delete_menu_item'])->name('delete_menu_item');
-
-
-
-Route::get('/users', [AdminController::class, 'ausers'])->name('admin_users');
-
 
 Route::post('/submit_dish', [AdminController::class, 'submit'])->name('submit_dish');
 
