@@ -35,7 +35,7 @@ class MainController extends Controller
         if ($weatherCondition !== null && $temperature !== null) {
             $restaurantName = "name";
             
-            if ($weatherCondition == 'Clear' && $temperature > 20) {
+            if ($weatherCondition == 'Clear' && $temperature > 15) {
                 return "What a lovely weather! Why not try pizza at {$restaurantName}?";
             } elseif ($weatherCondition == 'Rain') {
                 return "It's raining outside. How about some hot soup at {$restaurantName}?";
@@ -69,15 +69,20 @@ class MainController extends Controller
             'subject' => 'required|min:4|max:255',
             'message' => 'required|min:10',
         ]);
-
+    
+      
+        $user_id = auth()->id();
+    
         $review = new Review();
         $review->email = $request->input('email');
         $review->subject = $request->input('subject');
         $review->message = $request->input('message');
+        $review->user_id = $user_id; 
         $review->save();
-
+    
         return redirect()->route('review');
     }
+    
 
   
 

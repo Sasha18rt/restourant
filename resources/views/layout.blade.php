@@ -77,6 +77,9 @@
   </header>
 
   @yield('main_content')
+
+
+  
   <footer class="bg-dark text-white">
   <div class="container">
     <div class="row">

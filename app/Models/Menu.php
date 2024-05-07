@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
-{   protected $table = 'menu';
+{   
     use HasFactory;
+
+    protected $fillable = ['title', 'description', 'price', 'image', 'type']; 
+
+    protected $table = 'menu'; 
 }
+

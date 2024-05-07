@@ -33,6 +33,16 @@
   .btn-delete:hover {
     background-color: #b9352c; 
 }
+.tab-item img {
+    width: 100%;
+    max-height: 120px; 
+    object-fit: cover; 
+	
+}
+.description {
+    max-height: 100px; 
+    overflow: hidden; 
+}
 
 .btn-delete-user {
     background-color: #eb4d4b; 
@@ -64,14 +74,28 @@
 	background-color: rgb(37, 37, 161); 
 }
 .user-search .search-input {
-	/* Your desired styles for the search input */
-	width: 200px; /* Adjust width as needed */
-	padding: 5px; /* Add padding */
-	border: 1px solid #ccc; /* Add border */
-	border-radius: 4px; /* Add rounded corners */
-	box-sizing: border-box; /* Ensure padding is included in width */
+	
+	width: 200px; 
+	padding: 5px; 
+	border: 1px solid #ccc; 
+	border-radius: 4px; 
+	box-sizing: border-box; 
   }
-  
+
+  .form-select {
+    background: var(--second-bg-color);
+    border: none;
+    padding: 12px 20px; 
+    width: 200px; 
+    height: 40px; 
+    outline: none;
+    color: var(--main-color);
+    border-radius: 20px;
+}
+.select{
+	padding-bottom: 10px;
+}
+
 .light {
 	--main-bg-color: var(--light-background);
 	--second-bg-color: var(--light-second-background);
@@ -711,6 +735,7 @@ table th {
 
 .form-label {
     font-weight: bold;
+	
 }
 
 .form-control {
@@ -765,9 +790,9 @@ input {
 	display: flex;
 }
 .no_bg {
-    background-color: transparent; /* Встановлює прозорий фон */
-    border: none; /* Прибирає межі */
-    /* Якщо ви бажаєте приховати значок вибору файлу, ви можете встановити його розміщення поза екраном */
+    background-color: transparent; 
+    border: none; 
+  
     overflow: hidden;
     width: 0.1px;
     height: 0.1px;
@@ -776,8 +801,8 @@ input {
     z-index: -1;
 }
 #photo {
-    background-color: transparent !important; /* Встановлює прозорий фон */
-    border: none !important; /* Прибирає межі */
+    background-color: transparent !important; 
+    border: none !important; 
 	cursor: pointer; 
 
 }
@@ -801,7 +826,7 @@ input {
     font-weight: 700;
     color: var(--main-color);
   }
-  
+ 
   .tabs-content .tab-item {
     position: relative;
     margin-bottom: 60px;
@@ -816,8 +841,8 @@ input {
   }
   .mb-3 img{
 	float: left;
-    width: 200px;
-    max-width: 200px;
+    width: 230px;
+    max-width: 230px;
     margin-right: 20px;
     border-radius: 5px;
   }

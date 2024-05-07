@@ -21,8 +21,17 @@
         <textarea id="description" name="description" class="navbar-search-input" required>{{$menuitem->description}}</textarea>
     </div>
 
-   
-    
+    <div class="mb-3 select">
+    <label for="dish_type" class="form-label">Dish type:</label>
+    <select id="dish_type" name="dish_type" class="form-select" required>
+        <option value="Pizza" {{ ($menuitem->type == 'Pizza') ? 'selected' : '' }}>Pizza</option>
+        <option value="Pasta" {{ ($menuitem->type == 'Pasta') ? 'selected' : '' }}>Pasta</option>
+        <option value="Snack" {{ ($menuitem->type == 'Snack') ? 'selected' : '' }}>Snack</option>
+        <option value="Drink" {{ ($menuitem->type == 'Drink') ? 'selected' : '' }}>Drink</option>
+    </select>
+</div>
+
+
     <div class="mb-3">
         <label for="photo" class="form-label">New Dish Photo:</label>
         <input type="file" id="photo" name="photo" class="navbar-search-input photo" accept="image/*">
@@ -31,6 +40,7 @@
     <button type="submit" class="btn btn-update">Update</button>
 </form>
 
+
 </div>
 <section class="section" id="offers">
     <div class="container">
@@ -38,7 +48,6 @@
             <div class="col-lg-4 offset-lg-4 text-center">
                 <div class="section-heading">
                     <h1 class="text-center">Old one</h1>
-                   
                 </div>
             </div>
         </div>
@@ -62,24 +71,19 @@
                                         <div class="row">
                                             <div class="left-list">
                                                 <div class="col-lg-12">
-                                                    <div class="tab-item">
-                                                        <img src="/foodimage/{{ $menuitem->image }}" alt="">
-                                                        <h4>{{ $menuitem->title }}</h4>
-                                                        <p>{{ $menuitem->description }}</p>
-                                                        <div class="price">
-                                                            <h6>${{ $menuitem->price }}</h6>
-                                                        </div>
-                                                        <form action="{{ route('delete_menu_item', $menuitem->id) }}" method="post">
-                                                            @csrf
-                                                            
-                                                            
-                                                        </form>
+                                                    <div class="tab-item d-flex">
+                                                        <img src="/foodimage/{{ $menuitem->image }}" alt="" class="mr-3">
+                                                        <div>
+                                                            <h4>{{ $menuitem->title }}</h4>
+                                                            <p>{{ $menuitem->description }}</p>
+                                                            <div class="price">
+                                                                <h6>${{ $menuitem->price }}</h6>
+                                                           
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </article>
                         </section>

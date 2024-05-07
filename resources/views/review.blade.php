@@ -28,6 +28,7 @@
     <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email"
            value="{{ Auth::user()->email ?? '' }}" readonly required>
   </div>
+
               <div class="mb-3">
                 <label for="subject" class="form-label">Subject:</label>
                 <input type="text" name="subject" id="subject" class="form-control" placeholder="Enter review subject" maxlength="255" required>

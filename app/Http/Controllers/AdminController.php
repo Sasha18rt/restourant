@@ -100,7 +100,7 @@ class AdminController extends Controller
         $menuitem->title = $request->dish_name;
         $menuitem->price = $request->price;
         $menuitem->description = $request->description;
-    
+        $menuitem->type = $request->dish_type;
         $menuitem->save();
     
         return redirect()->back()->with('success', 'Menu item updated successfully.');
@@ -146,7 +146,7 @@ class AdminController extends Controller
         $data->title = $request->dish_name;
         $data->price = $request->price;
         $data->description = $request->description;
-        
+        $data->type = $request->dish_type;
         $data->save();
     
         return redirect()->back()->withSuccess('Menu item added successfully!');

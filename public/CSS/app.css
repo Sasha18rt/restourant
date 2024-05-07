@@ -83,9 +83,7 @@ about
   transform: translate(-35px, -35px);
   transition: all .3s;
 }
-.color{
-  color: #cc683e;
-}
+
 #about .text{
   height: 100px;
 }
@@ -123,17 +121,11 @@ about
     color: white; 
   }
   
-a.active {
-    /* font-size: large; */
-    border-bottom: 2px solid #c2c2c2; 
-    padding-bottom: 2px; 
 
-}
 h1.text-center.mt-5 {
   color: black;
   padding-bottom: 45px;
-  text-decoration: underline; 
-  text-underline-position: under; 
+  
   text-decoration-color: #c2c2c2;  
   text-decoration-style: solid; 
   text-decoration-thickness: 2px; 
@@ -213,7 +205,10 @@ div.add{
   
     position: relative; 
   }
-  
+  @media only screen and (max-width: 850px) {
+    .carousel-container{
+      display: none;
+    }}
   @media only screen and (max-width: 768px) {
     .carousel-container{
       display: none;
@@ -238,6 +233,99 @@ div.add{
 
 
   /* MENU */
+
+  #menu .list-inline-item a {
+    font-size: 30px;
+    font-weight: normal; 
+}
+  #menu .section-heading{
+    text-decoration: none; 
+
+  }
+  #menu .list-inline{
+    padding-bottom: 40px;
+    padding-top: 40px;
+    
+  }
+  #menu .heading-tabs a {
+    color: #333; 
+    
+    font-family: Arial, sans-serif; 
+    text-decoration: none;
+    
+   
+}
+#menu .heading-tabs a:hover {
+  color: #cc683e;
+
+  
+  font-family: Arial, sans-serif; 
+  text-decoration: none;
+ 
+}
+#menu .heading-tabs .list-inline-item a.active {
+  color: #cc683e;
+  
+  font-family: Arial, sans-serif; 
+  text-decoration: none;
+}
+
+.menu-divider {
+  text-align: center;
+  font-size: 25px;
+  font-weight: lighter;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  background-color: #fff;
+  z-index: 1;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.menu-divider::before,
+.menu-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 40px);
+  height: 0.5px;
+  background-color: #333;
+  z-index: -1;
+}
+
+.menu-divider::before {
+  left: 0;
+}
+
+.menu-divider::after {
+  right: 0;
+}
+
+
+
+
+
+  #menu ul li a {
+    text-transform: capitalize;
+    width: 100%;
+    display: inline-block;
+    font-size: 15px;
+    color: #fb5849;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-align: center;
+  }
+ 
+  #tabs .tab-item .menu-image {
+    width: 100%;
+    max-height: 120px; 
+    object-fit: cover; 
+}
+
+
+
   .tabs-content .price h6 {
     position: absolute;
     top: 15px;
@@ -283,9 +371,7 @@ div.add{
     margin-right: 15px;
   }
   
-  .tabs-content .right-list {
-    margin-left: 15px;
-  }
+  
   
   
   .menu-image {
@@ -305,7 +391,8 @@ div.add{
   /* ABOUT US */
 
   @media (max-width: 992px) {
-   
+    
+    
     #chefs .chef-item {
       margin-bottom: 30px;
     }
@@ -493,5 +580,6 @@ div.add{
 }
 
 #about .col-4 img, .thumb img{
+  
   border-radius: 5px; 
 }
