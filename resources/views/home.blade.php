@@ -206,21 +206,13 @@
             <div class="col-lg-12">
                 <div class="heading-tabs text-center">
                     <ul class="list-inline">
-                        
+                        @foreach($dishTypes as $type)
                         <li class="list-inline-item">
-                            <a onclick="showTab(1, this)" href='#menu' >Pasta</a>
+                            <a onclick="showTab('{{ $type->type }}', this)" href='#menu'>{{ $type->type }}</a>
                         </li>
+                        @endforeach
                         <li class="list-inline-item">
-                            <a onclick="showTab(2, this)" href='#menu' >Pizza</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a onclick="showTab(3, this)" href='#menu' >Snack</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a onclick="showTab(4, this)" href='#menu' >Drink</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a onclick="showTab(0, this)" href='#menu' >All</a>
+                            <a onclick="showTab('All', this)" href='#menu'>All</a>
                         </li>
                     </ul>
                 </div>
@@ -230,116 +222,59 @@
             <div class="col-lg-12">
                 <div class="row" id="tabs">
                     <div class="col-lg-12">
-                        <section class="tabs-content" id="tab-1"> 
-                        <div class="menu-divider "> Pasta </div>
-
-                            @foreach($menu->where('type', 'Pasta')->chunk(2) as $key => $chunk)
-                                <article id='tabs-{{ $key + 1 }}'>
-                                    <div class="row">
-                                        @foreach($chunk as $index => $dish)
-                                            <div class="col-lg-6">
-                                                <div class="row">
-                                                    <div class="{{ ($index % 2 == 0) ? 'left-list' : 'right-list' }}">
-                                                        <div class="col-lg-12">
-                                                            <div class="tab-item">
-                                                                <img src="/foodimage/{{ $dish->image }}" alt="{{ $dish->title }}" class="menu-image">  
-                                                                <h4>{{ $dish->title }}</h4>
-                                                                <p>{{ $dish->description }}</p>
-                                                                <div class="price">
-                                                                    <h6>{{ $dish->price }}$</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                        @foreach($dishTypes as $type)
+                        <section class="tabs-content" id="tab-{{ $type->type }}" style="display:none;">
+                            <div class="menu-divider">{{ $type->type }}</div>
+                            @foreach($menu->where('type', $type->type)->chunk(2) as $key => $chunk)
+                            <article id='tabs-{{ $type->type }}-{{ $key + 1 }}'>
+                                <div class="row">
+                                    @foreach($chunk as $index => $dish)
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="tab-item">
+                                                    <img src="/foodimage/{{ $dish->image }}" alt="{{ $dish->title }}" class="menu-image">
+                                                    <h4>{{ $dish->title }}</h4>
+                                                    <p>{{ $dish->description }}</p>
+                                                    <div class="price">
+                                                        <h6>{{ $dish->price }}$</h6>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        </div>
                                     </div>
-                                </article>
+                                    @endforeach
+                                </div>
+                            </article>
                             @endforeach
                         </section>
+                        @endforeach
 
-                        <div class="menu-divider"> Pizza</div>
-
-                        <section class="tabs-content" id="tab-2">
-                            @foreach($menu->where('type', 'Pizza')->chunk(2) as $key => $chunk)
-                                <article id='tabs-{{ $key + 1 }}'>
-                                    <div class="row">
-                                        @foreach($chunk as $index => $dish)
-                                            <div class="col-lg-6">
-                                                <div class="row">
-                                                    <div class="{{ ($index % 2 == 0) ? 'left-list' : 'right-list' }}">
-                                                        <div class="col-lg-12">
-                                                            <div class="tab-item">
-                                                                <img src="/foodimage/{{ $dish->image }}" alt="{{ $dish->title }}" class="menu-image">  
-                                                                <h4>{{ $dish->title }}</h4>
-                                                                <p>{{ $dish->description }}</p>
-                                                                <div class="price">
-                                                                    <h6>{{ $dish->price }}$</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                        <section class="tabs-content" id="tab-All">
+                            @foreach($dishTypes as $type)
+                            <div class="menu-divider">{{ $type->type }}</div>
+                            @foreach($menu->where('type', $type->type)->chunk(2) as $key => $chunk)
+                            <article id='tabs-All-{{ $key + 1 }}'>
+                                <div class="row">
+                                    @foreach($chunk as $index => $dish)
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="tab-item">
+                                                    <img src="/foodimage/{{ $dish->image }}" alt="{{ $dish->title }}" class="menu-image">
+                                                    <h4>{{ $dish->title }}</h4>
+                                                    <p>{{ $dish->description }}</p>
+                                                    <div class="price">
+                                                        <h6>{{ $dish->price }}$</h6>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        </div>
                                     </div>
-                                </article>
+                                    @endforeach
+                                </div>
+                            </article>
                             @endforeach
-                        </section>
-                        <div class="menu-divider "> Snack </div>
-                        <section class="tabs-content tab-3" id="tab-3">
-                            @foreach($menu->where('type', 'Snack')->chunk(2) as $key => $chunk)
-                                <article id='tabs-{{ $key + 1 }}'>
-                                    <div class="row">
-                                        @foreach($chunk as $index => $dish)
-                                            <div class="col-lg-6">
-                                                <div class="row">
-                                                    <div class="{{ ($index % 2 == 0) ? 'left-list' : 'right-list' }}">
-                                                        <div class="col-lg-12">
-                                                            <div class="tab-item">
-                                                                <img src="/foodimage/{{ $dish->image }}" alt="{{ $dish->title }}" class="menu-image">  
-                                                                <h4>{{ $dish->title }}</h4>
-                                                                <p>{{ $dish->description }}</p>
-                                                                <div class="price">
-                                                                    <h6>{{ $dish->price }}$</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </article>
-                            @endforeach
-                        </section>
-
-                        <div class="menu-divider "> Drink </div>
-                        <section class="tabs-content tab-4" id="tab-4">
-                            @foreach($menu->where('type', 'Drink')->chunk(2) as $key => $chunk)
-                                <article id='tabs-{{ $key + 1 }}'>
-                                    <div class="row">
-                                        @foreach($chunk as $index => $dish)
-                                            <div class="col-lg-6">
-                                                <div class="row">
-                                                    <div class="{{ ($index % 2 == 0) ? 'left-list' : 'right-list' }}">
-                                                        <div class="col-lg-12">
-                                                            <div class="tab-item">
-                                                                <img src="/foodimage/{{ $dish->image }}" alt="{{ $dish->title }}" class="menu-image">  
-                                                                <h4>{{ $dish->title }}</h4>
-                                                                <p>{{ $dish->description }}</p>
-                                                                <div class="price">
-                                                                    <h6>{{ $dish->price }}$</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </article>
                             @endforeach
                         </section>
                     </div>
@@ -350,44 +285,44 @@
 </section>
 
 <script>
-    function showTab(tabNumber, linkElement) {
-        var tabs = document.querySelectorAll('.tabs-content');
-        tabs.forEach(function(tab) {
-            tab.style.display = 'none';
+function showTab(tabName, linkElement) {
+    var tabs = document.querySelectorAll('.tabs-content');
+    tabs.forEach(function(tab) {
+        tab.style.display = 'none';
+    });
+
+    if (tabName === 'All') {
+        var allTabs = document.querySelectorAll('#tab-All');
+        allTabs.forEach(function(tab) {
+            tab.style.display = 'block';
         });
 
-        if (tabNumber === 0) {
-            tabs.forEach(function(tab) {
-                tab.style.display = 'block';
-            });
-
-            var dividers = document.querySelectorAll('.menu-divider');
-            dividers.forEach(function(divider) {
-                divider.style.display = 'block';
-            });
-        } else {
-            var selectedTab = document.getElementById('tab-' + tabNumber);
-            selectedTab.style.display = 'block';
-
-            var dividers = document.querySelectorAll('.menu-divider');
-            dividers.forEach(function(divider) {
-                divider.style.display = 'none';
-            });
-        }
-
-        var links = document.querySelectorAll('.heading-tabs a');
-        links.forEach(function(link) {
-            link.classList.remove('active');
+        var dividers = document.querySelectorAll('.menu-divider');
+        dividers.forEach(function(divider) {
+            divider.style.display = 'block';
         });
-        linkElement.classList.add('active');
+    } else {
+        var selectedTab = document.getElementById('tab-' + tabName);
+        selectedTab.style.display = 'block';
+
+        var dividers = document.querySelectorAll('.menu-divider');
+        dividers.forEach(function(divider) {
+            divider.style.display = 'none';
+        });
     }
 
-    window.onload = function() {
-        var firstLink = document.querySelector('.heading-tab a');
-        showTab(0, firstLink);
-    };
-</script>
+    var links = document.querySelectorAll('.heading-tabs a');
+    links.forEach(function(link) {
+        link.classList.remove('active');
+    });
+    linkElement.classList.add('active');
+}
 
+window.onload = function() {
+    var firstLink = document.querySelector('.heading-tabs a');
+    showTab('All', firstLink);
+};
+</script>
 
 
 

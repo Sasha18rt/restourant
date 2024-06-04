@@ -21,9 +21,10 @@
 	padding-bottom: 10px;
 }
 .btn-delete {
-	background-color: #eb4d4b; /* Danger color */
+	background-color: #eb4d4b; 
     color: #fff; 
     padding: 8px 16px; 
+	margin-right: 10px;
     border: none; 
     border-radius: 4px; 
     cursor: pointer; 
@@ -324,6 +325,54 @@ body {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+
+.menu-card {
+    width: 100%; /* Ensure the card takes the full width of its container */
+
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card .row.no-gutters {
+
+    width: 100%;
+}
+
+.menu-card img {
+    width: 100%;
+    max-height: 120px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+
+
+.menu-card .card-title {
+    font-size: 1.25rem;
+    margin: 0;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.menu-card .card-text {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.menu-card .price p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 8px;
+}
+
+.mb-4{
+	width: 100%;
+}
+
 
 .dropdown-menu-link span > span {
 	font-size: 10px;
@@ -727,7 +776,8 @@ table th {
 
 /* Base styles */
 .d-flex {
-  display: flex; /* Allow elements to align horizontally */
+    margin-top: 10px;
+	display: flex;
 }
 
 

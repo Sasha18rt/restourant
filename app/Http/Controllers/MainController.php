@@ -22,11 +22,16 @@ class MainController extends Controller
         }
         $reviews = Review::get(); 
         $menu = Menu::all();
-        
+        $dishTypes = Menu::select('type')->distinct()->get();
        
         $reservationText = $this->generateReservationText();
     
-        return view('home', ['reviews' => $reviews, 'menu' => $menu, 'reservationText' => $reservationText]);
+        return view('home', [
+            'reviews' => $reviews,
+            'menu' => $menu,
+            'reservationText' => $reservationText,
+            'dishTypes' => $dishTypes
+        ]);
     }
     
     protected function generateReservationText() {

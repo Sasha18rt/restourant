@@ -50,7 +50,7 @@ Route::delete('/delete_reservation/{id}',  [AdminController::class, 'delete_rese
 
 Route::get('/delete_menu_item/{id}', [AdminController::class, 'delete_menu_item'])->name('delete_menu_item');
 
-Route::post('/submit_dish', [AdminController::class, 'submit'])->name('submit_dish');
+Route::post('/submit_dish', [AdminController::class, 'submitDish'])->name('submit_dish');
 
 
 Route::get('/update_menu_item/{id}', [AdminController::class, 'update_menu_item'])->name('update_menu_item');

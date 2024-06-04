@@ -14,10 +14,11 @@ class AdminController extends Controller
 {
     public function amenu()
     {
-        $menu = menu::all();
-        
-        return view( 'admin.admin_menu', [ 'menu' => $menu]);
+        $menu = Menu::all();
+        $dishTypes = Menu::select('type')->distinct()->get();
+        return view('admin.admin_menu', compact('menu', 'dishTypes'));
     }
+    
 
     public function ausers()
     {
@@ -78,9 +79,11 @@ class AdminController extends Controller
 
     public function update_menu_item($id){
         $menuitem = Menu::find($id);
-        
-        return view('admin.update_menu_item', compact('menuitem'));
+        $dishTypes = Menu::select('type')->distinct()->get();
+        return view('admin.update_menu_item', compact('menuitem', 'dishTypes'));
     }
+    
+    
     
     public function update(Request $request, $id) {
         $menuitem = Menu::find($id);
@@ -123,33 +126,36 @@ class AdminController extends Controller
         return view('admin.admin_users', compact('users')); // Pass the filtered users to the view
     }
 
-    public function submit(Request $request){
-
+ 
+    public function submitDish(Request $request)
+    {
         $request->validate([
-            'photo' => 'nullable|max:2048', //2 MB (2048 KB)
-            'dish_name' => 'required|string|max:30',
-            'price' => 'required|numeric',
-            'description' => 'required|min:10|string',
+            'dish_type' => 'required_without:new_dish_type',
+            'new_dish_type' => 'required_if:dish_type,new|string|max:255',
+            'dish_name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
-        $data = new Menu;
-    
-        $image = $request->file('photo');
-    
-        if ($image) {
-            $imagename = time().'.'.$image->getClientOriginalExtension();
+
+        $dishType = $request->input('dish_type') === 'new' ? $request->input('new_dish_type') : $request->input('dish_type');
+
+        $menu = new Menu;
+        $menu->title = $request->dish_name;
+        $menu->price = $request->price;
+        $menu->description = $request->description;
+        $menu->type = $dishType;
+
+        if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
             $image->move('foodimage', $imagename);
-    
-            $data->image = $imagename;
+            $menu->image = $imagename;
         }
-    
-        $data->title = $request->dish_name;
-        $data->price = $request->price;
-        $data->description = $request->description;
-        $data->type = $request->dish_type;
-        $data->save();
-    
-        return redirect()->back()->withSuccess('Menu item added successfully!');
+
+        $menu->save();
+
+        return redirect()->back()->with('success', 'Dish added successfully!');
     }
     
     
