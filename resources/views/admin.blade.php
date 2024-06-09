@@ -13,7 +13,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/e3a49d370f.js" crossorigin="anonymous"></script>
 	
-    <
+    
 
 	
 </head>
@@ -34,9 +34,7 @@
 			</li>
 		</ul>
 		
-		<form class="navbar-search">
-			
-		</form>
+		
 		<ul class="navbar-nav nav-right">
 			<li class="nav-item mode">
 				<a class="nav-link" href="#" onclick="switchTheme()">

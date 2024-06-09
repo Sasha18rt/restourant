@@ -6,52 +6,81 @@ use App\Models\Review;
 use App\Models\User;
 use App\Models\Menu;
 use App\Models\Reservation;
-
-use App\Http\Controllers\Controller;
+use App\Models\Dish;
+use App\Models\DishType;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function amenu()
     {
-        $menu = Menu::all();
-        $dishTypes = Menu::select('type')->distinct()->get();
-        return view('admin.admin_menu', compact('menu', 'dishTypes'));
+        $menu = Dish::all();
+        $dishTypes = DishType::all();
+        
+        return view('admin.admin_menu', compact('dishTypes', 'menu'));
+    }
+
+    public function addNewDishType(Request $request)
+    {
+        $request->validate([
+            'new_dish_type' => 'required|string|max:255',
+        ]);
+    
+        DishType::create([
+            'type_name' => $request->new_dish_type,
+        ]);
+    
+        return redirect()->back();
+    }
+
+    public function deleteDishType(Request $request)
+    {
+        $request->validate([
+            'dish_type_id' => 'required|exists:dish_types,id',
+        ]);
+    
+        $dishType = DishType::find($request->dish_type_id);
+        if ($dishType) {
+            $dishType->delete();
+            return redirect()->back()->with('success', 'Dish type deleted successfully.');
+        }
+    
+        return redirect()->back()->with('error', 'Failed to delete dish type.');
     }
     
 
     public function ausers()
     {
         $users = User::all(); 
-    return view("admin.admin_users", compact("users"));
+        return view("admin.admin_users", compact("users"));
     }
+
     public function areservation()
     {
         $reservations = Reservation::all();
         return view('admin.admin_reservation', ['reservations' => $reservations]);
     }
-    
 
     public function areviews()
-    {$reviews = review::get(); 
+    {
+        $reviews = Review::all(); 
         return view('admin.admin_reviews', ['reviews' => $reviews]);
-        
     }
 
-    public function delete_user($id){
+    public function delete_user($id)
+    {
         $user = User::find($id);
 
-    if ($user) {
-        $user->delete();
-        return redirect()->back()->with('success', 'User deleted successfully!'); 
-    } else {
-        return redirect()->back()->with('error', 'User not found.'); 
-    }
+        if ($user) {
+            $user->delete();
+            return redirect()->back()->with('success', 'User deleted successfully!'); 
+        } else {
+            return redirect()->back()->with('error', 'User not found.'); 
+        }
     }
 
     public function delete_reservation($id)
     {
-        
         $reservation = Reservation::find($id);
     
         if ($reservation) {
@@ -61,145 +90,130 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Reservation not found.');
         }
     }
-    
-    
 
-
-    public function delete_menu_item($id)
+    public function deleteDish($id)
     {
-        $menuItem = Menu::find($id);
+        $dish = Dish::find($id);
         
-        if ($menuItem) {
-            $menuItem->delete();
-            return redirect()->back();
+        if ($dish) {
+            $dish->delete();
+            return redirect()->back()->with('success', 'Dish deleted successfully.');
         } else {
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Dish not found.');
         }
     }
 
-    public function update_menu_item($id){
-        $menuitem = Menu::find($id);
-        $dishTypes = Menu::select('type')->distinct()->get();
-        return view('admin.update_menu_item', compact('menuitem', 'dishTypes'));
+    public function update_menu_item($id)
+{
+    $menuitem = Dish::find($id);
+    if (!$menuitem) {
+        return redirect()->back()->with('error', 'Dish not found.');
     }
-    
-    
-    
-    public function update(Request $request, $id) {
-        $menuitem = Menu::find($id);
-    
-        if (!$menuitem) {
-            return redirect()->back()->with('error', 'Menu item not found.');
+    $dishTypes = DishType::all();
+    return view('admin.update_menu_item', compact('menuitem', 'dishTypes'));
+}
+
+    public function updateDish(Request $request, $id)
+    {
+        $dish = Dish::find($id);
+
+        if (!$dish) {
+            return redirect()->back()->with('error', 'Dish not found.');
         }
-    
+
         $image = $request->file('photo');
-    
+
         if ($image) {
             $imagename = time() . '.' . $image->getClientOriginalExtension();
             $image->move('foodimage', $imagename);
-            $menuitem->image = $imagename;
+            $dish->image = $imagename;
         }
-    
-        $menuitem->title = $request->dish_name;
-        $menuitem->price = $request->price;
-        $menuitem->description = $request->description;
-        $menuitem->type = $request->dish_type;
-        $menuitem->save();
-    
-        return redirect()->back()->with('success', 'Menu item updated successfully.');
-    }
-    
 
+        $dish->title = $request->dish_name;
+        $dish->price = $request->price;
+        $dish->description = $request->description;
 
-    public function searchUsers(Request $request)
-    {
-        $searchTerm = $request->input('search');
-
-        if ($searchTerm) {
-            $users = User::where('name', 'like', "%{$searchTerm}%")
-                ->orWhere('email', 'like', "%{$searchTerm}%") // Add more search criteria as needed
-                ->get();
+        if ($request->dish_type == 'new' && !empty($request->new_dish_type)) {
+            $newType = new DishType();
+            $newType->type_name = $request->new_dish_type;
+            $newType->save();
+            $dish->type_id = $newType->id;
         } else {
-            $users = User::all(); // No search term, retrieve all users
+            $dish->type_id = $request->dish_type;
         }
 
-        return view('admin.admin_users', compact('users')); // Pass the filtered users to the view
+        $dish->save();
+
+        return redirect()->back()->with('success', 'Dish updated successfully.');
     }
 
- 
     public function submitDish(Request $request)
     {
         $request->validate([
-            'dish_type' => 'required_without:new_dish_type',
-            'new_dish_type' => 'required_if:dish_type,new|string|max:255',
             'dish_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|max:2048',
+            'dish_type_id' => 'required|string', 
         ]);
 
-        $dishType = $request->input('dish_type') === 'new' ? $request->input('new_dish_type') : $request->input('dish_type');
+        if ($request->input('dish_type_id') === 'new') {
+            $request->validate([
+                'new_dish_type' => 'required|string|max:255',
+            ]);
 
-        $menu = new Menu;
-        $menu->title = $request->dish_name;
-        $menu->price = $request->price;
-        $menu->description = $request->description;
-        $menu->type = $dishType;
+            $dishType = new DishType();
+            $dishType->type_name = $request->input('new_dish_type');
+            $dishType->save();
+
+            $dishTypeId = $dishType->id;
+        } else {
+            $dishTypeId = $request->input('dish_type_id');
+        }
+
+        $dish = new Dish();
+        $dish->title = $request->dish_name;
+        $dish->price = $request->price;
+        $dish->description = $request->description;
+        $dish->type_id = $dishTypeId;
 
         if ($request->hasFile('photo')) {
             $image = $request->file('photo');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->move('foodimage', $imagename);
-            $menu->image = $imagename;
+            $image->move(public_path('foodimage'), $imagename);
+            $dish->image = $imagename;
         }
 
-        $menu->save();
+        $dish->save();
 
         return redirect()->back()->with('success', 'Dish added successfully!');
     }
-    
-    
-
-        
-
-
-    // Review
 
     public function search_review(Request $request)
-{
-  $searchTerm = $request->input('search');
+    {
+        $searchTerm = $request->input('search');
 
-  if ($searchTerm) {
-    $reviews = Review::where('subject', 'like', "%{$searchTerm}%")
-                   ->orWhere('email', 'like', "%{$searchTerm}%")
-                   ->orWhere('message', 'like', "%{$searchTerm}%") // Add more search criteria if needed
-                   ->get();
-  } else {
-    $reviews = Review::all(); // No search term, retrieve all reviews
-  }
+        if ($searchTerm) {
+            $reviews = Review::where('subject', 'like', "%{$searchTerm}%")
+                             ->orWhere('email', 'like', "%{$searchTerm}%")
+                             ->orWhere('message', 'like', "%{$searchTerm}%")
+                             ->get();
+        } else {
+            $reviews = Review::all(); // No search term, retrieve all reviews
+        }
 
-  return view('admin.admin_reviews', compact('reviews')); // Pass the filtered reviews to the view
-}
-
-    
-public function delete_review($id)
-{
-    $review = Review::find($id);
-
-    if ($review) {
-        $review->delete();
-        return redirect()->back()->with('success', 'Review deleted successfully!');
-    } else {
-        return redirect()->back()->with('error', 'Review not found.');
+        return view('admin.admin_reviews', compact('reviews')); // Pass the filtered reviews to the view
     }
-}
 
+    public function delete_review($id)
+    {
+        $review = Review::find($id);
 
-
-// reservation
-
-
-
-  
-
+        if ($review) {
+            $review->delete();
+            return redirect()->back()->with('success', 'Review deleted successfully!');
+        } else {
+            return redirect()->back()->with('error', 'Review not found.');
+        }
+    }
 }

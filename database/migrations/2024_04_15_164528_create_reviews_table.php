@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('email'); // one to many!
+            $table->string('email'); 
             $table->string('subject');
             $table->text('message');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contact_models');
+        Schema::dropIfExists('reviews');
     }
 };

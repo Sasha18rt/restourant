@@ -3,7 +3,7 @@
 @section('content')
 <div class="card out_menu"> 
     <div>
-        <form action="{{url('/update', $menuitem->id)}}" method="post" enctype="multipart/form-data" class="menu_form">
+        <form action="{{ route('submit_update_dish', $menuitem->id) }}" method="post" enctype="multipart/form-data" class="menu_form">
             @if($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -14,27 +14,28 @@
                 </div>
             @endif
             @csrf    
+            @method('PUT')
             <base href="/public">
             <div class="mb-3">
                 <label for="dish_name" class="form-label">Dish Name:</label>
-                <input type="text" id="dish_name" name="dish_name" class="navbar-search-input" value="{{$menuitem->title}}" required>
+                <input type="text" id="dish_name" name="dish_name" class="navbar-search-input" value="{{ $menuitem->title }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="price" class="form-label">Price:</label>
-                <input type="number" id="price" name="price" class="navbar-search-input" value="{{$menuitem->price}}" step="0.01" required>
+                <input type="number" id="price" name="price" class="navbar-search-input" value="{{ $menuitem->price }}" step="0.01" required>
             </div>
 
             <div class="mb-3">
                 <label for="description" class="form-label">Description:</label>
-                <textarea id="description" name="description" class="navbar-search-input" required>{{$menuitem->description}}</textarea>
+                <textarea id="description" name="description" class="navbar-search-input" required>{{ $menuitem->description }}</textarea>
             </div>
 
             <div class="mb-3 select">
                 <label for="dish_type" class="form-label">Dish type:</label>
                 <select id="dish_type_select" name="dish_type" class="form-select" required>
                     @foreach($dishTypes as $type)
-                        <option value="{{ $type->type }}" {{ ($menuitem->type == $type->type) ? 'selected' : '' }}>{{ $type->type }}</option>
+                        <option value="{{ $type->id }}" {{ ($menuitem->type_id == $type->id) ? 'selected' : '' }}>{{ $type->type_name }}</option>
                     @endforeach
                     <option value="new">Add new type</option>
                 </select>

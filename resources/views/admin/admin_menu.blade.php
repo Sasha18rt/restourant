@@ -14,17 +14,20 @@
                 </div>
             @endif
             @csrf    
-            <div class="mb-3 select">
+            <div class="dropdown-menu-item select">
                 <label for="dish_type" class="form-label">Dish type:</label>
-                <select name="dish_type" class="form-select" id="dish_type_select">
-                    @foreach($dishTypes as $type)
-                        <option value="{{ $type->type }}">{{ $type->type }}</option>
-                    @endforeach
-                    <option value="new">Add new type</option>
-                </select>
-                <input type="text" id="new_dish_type" name="new_dish_type" class="form-control mt-2" style="display:none;" placeholder="New dish type">
+                <div class="d-flex align-items-center">
+                    <select name="dish_type_id" class="form-select" id="dish_type_select">
+                        @foreach($dishTypes as $type)
+                            <option class="dropdown-menu-link" value="{{ $type->id }}">{{ $type->type_name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" id="gear_icon_btn" class="card" style="margin-left: 3px; font-size: 18px; box-shadow: none; cursor: pointer;  border: none; margin-top: 8px;">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
             </div>
-
+            
             <div class="mb-3">
                 <label for="dish_name" class="form-label">Dish Name:</label>
                 <input type="text" id="dish_name" name="dish_name" class="navbar-search-input" required>
@@ -42,12 +45,40 @@
 
             <div class="mb-3">
                 <label for="photo" class="form-label">Dish Photo:</label>
-                <input type="file" id="photo" name="photo" class="navbar-search-input photo" accept="image/*" required>
+                <input type="file" id="photo" name="photo" class="navbar-search-input  photo" accept="image/*" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Dish</button>
+            <button type="submit " class="btn btn-primary ">Add Dish</button>
         </form>
+       
+        <div id="type_management_form" style="display:none; margin-top: 20px;">
+        <div class="mid">
+                        <h1>Type settings</h1>
+                    </div>
+            <form id="add_type_form" class="menu_form" action="{{ route('add_new_dish_type') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-3">
+                    <label for="new_dish_type_input" class="form-label">New Dish Type:</label>
+                    <input type="text" id="new_dish_type_input" name="new_dish_type" class="navbar-search-input" placeholder="New dish type">
+                </div>
+                <button type="submit" id="add_new_type_btn" class="btn btn-primary">Add New Type</button>
+            </form>
+
+            <form id="delete_type_form" class="menu_form" action="{{ route('delete_dish_type') }}" method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+                @csrf
+                <div class="mb-3">
+                    <label for="delete_dish_type_select" class="form-label">Delete Dish Type:</label>
+                    <select name="dish_type_id" class="form-select" id="delete_dish_type_select">
+                        @foreach($dishTypes as $type)
+                            <option value="{{ $type->id }}">{{ $type->type_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-delete">Delete Type</button>
+            </form>
+        </div>
     </div>
+    
     <section class="section" id="offers">
         <div class="container">
             <div class="row">
@@ -57,7 +88,7 @@
                         <select id="filter_dish_type_result" name="filter_dish_type" class="form-select">
                             <option value="All">All</option>
                             @foreach($dishTypes as $type)
-                                <option value="{{ $type->type }}">{{ $type->type }}</option>
+                                <option value="{{ $type->id }}">{{ $type->type_name }}</option>
                             @endforeach
                         </select>
                     </form>
@@ -81,7 +112,7 @@
                                 <div class="row ">
                                     @foreach($menu as $key => $menuItem)
                                     <div class="col-lg-6 mb-4 ">
-                                        <article id='tabs-{{ $key + 1 }}' data-type="{{ $menuItem->type }}">
+                                        <article id='tabs-{{ $key + 1 }}' data-type="{{ $menuItem->type_id }}">
                                             <div class="menu-card">
                                                 <div class="row no-gutters">
                                                     <div class="col-md-4">
@@ -95,14 +126,11 @@
                                                                 <p>${{ $menuItem->price }}</p>
                                                             </div>
                                                             <div class="d-flex">
-                                                                <form action="{{ route('delete_menu_item', $menuItem->id) }}" method="post">
+                                                                <form action="{{ route('delete_dish', $menuItem->id) }}" method="post">
                                                                     @csrf
-                                                                    <a href="{{ url('/delete_menu_item', $menuItem->id) }}" type="submit" class="btn btn-delete">Delete</a>
+                                                                    <button type="submit" class=" btn-delete">Delete</button>
                                                                 </form>
-                                                                <form action="{{ route('update_menu_item', $menuItem->id) }}" method="post">
-                                                                    @csrf
-                                                                    <a href="{{ url('/update_menu_item', $menuItem->id) }}" type="submit" class="btn btn-update">Update</a>
-                                                                </form>
+                                                                <a href="{{ route('edit_menu_item', $menuItem->id) }}" class=" btn-update">Update</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -124,7 +152,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('filter_dish_type_result').addEventListener('change', filterMenu);
-    document.getElementById('dish_type_select').addEventListener('change', toggleNewDishTypeInput);
+    document.getElementById('gear_icon_btn').addEventListener('click', toggleTypeManagementForm);
 
     function filterMenu() {
         var selectedType = document.getElementById('filter_dish_type_result').value;
@@ -141,17 +169,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function toggleNewDishTypeInput() {
-        var dishTypeSelect = document.getElementById('dish_type_select');
-        var newDishTypeInput = document.getElementById('new_dish_type');
-
-        if (dishTypeSelect.value === 'new') {
-            newDishTypeInput.style.display = 'block';
-        } else {
-            newDishTypeInput.style.display = 'none';
-        }
+    function toggleTypeManagementForm() {
+        var typeManagementForm = document.getElementById('type_management_form');
+        typeManagementForm.style.display = (typeManagementForm.style.display === 'none' || typeManagementForm.style.display === '') ? 'block' : 'none';
     }
 });
 </script>
+
 
 @endsection

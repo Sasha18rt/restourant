@@ -23,8 +23,9 @@
 .btn-delete {
 	background-color: #eb4d4b; 
     color: #fff; 
-    padding: 8px 16px; 
+    padding: 12px 18px; 
 	margin-right: 10px;
+	font-size: 15px;
     border: none; 
     border-radius: 4px; 
     cursor: pointer; 
@@ -95,6 +96,20 @@
 }
 .select{
 	padding-bottom: 10px;
+}
+
+
+
+
+
+
+#gear_icon_btn {
+	cursor: pointer;
+	transition: transform 0.3s;
+}
+
+#gear_icon_btn:hover {
+	transform: rotate(90deg);
 }
 
 .light {
@@ -226,7 +241,9 @@ body {
 	color: var(--second-color);
 	cursor: pointer;
 }
-
+.slidebar{
+	top:0;
+}
 .logo {
 	height: 60px;
 	padding: 10px;
@@ -765,7 +782,13 @@ table th {
 	vertical-align: middle;
 	border-radius: 50%;
 }
-
+.mid{
+	
+		display: flex;
+		justify-content: center; 
+		
+	
+}
 .progress-wrapper {
 	margin-bottom: 15px;
 }
@@ -858,7 +881,9 @@ input {
 }
 
 
-
+#new_dish_type{
+	margin-top: 10px;
+}
 
 
  /* MENU */

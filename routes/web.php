@@ -48,12 +48,19 @@ Route::get('/search_review', [AdminController::class, 'search_review'])->name('s
 Route::get('/areservation', [AdminController::class, 'areservation'])->name('admin_reservation');
 Route::delete('/delete_reservation/{id}',  [AdminController::class, 'delete_reservation'])->name('delete_reservation');
 
+Route::get('/delete-dish/{id}', [AdminController::class, 'deleteDish'])->name('delete_dish');
+
 Route::get('/delete_menu_item/{id}', [AdminController::class, 'delete_menu_item'])->name('delete_menu_item');
 
 Route::post('/submit_dish', [AdminController::class, 'submitDish'])->name('submit_dish');
 
+Route::post('/add-new-dish-type', [AdminController::class, 'addNewDishType'])->name('add_new_dish_type');
 
-Route::get('/update_menu_item/{id}', [AdminController::class, 'update_menu_item'])->name('update_menu_item');
+Route::post('/delete-dish-type', [AdminController::class, 'deleteDishType'])->name('delete_dish_type');
+
+
+Route::get('/edit-menu-item/{id}', [AdminController::class, 'update_menu_item'])->name('edit_menu_item');
+Route::put('/update-dish/{id}', [AdminController::class, 'updateDish'])->name('submit_update_dish');
 
 Route::post('/update/{id}', [AdminController::class, 'update'])->name('update');
 
