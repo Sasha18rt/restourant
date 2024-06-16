@@ -81,8 +81,8 @@
     
     <section class="section" id="offers">
         <div class="container">
+        <h1 class="mid">Dishes</h1>
             <div class="row">
-                <div class="col-lg-4 offset-lg-4">
                     <form id="filterForm">
                         <label for="filter_dish_type_result" class="form-label">Filter by Dish type:</label>
                         <select id="filter_dish_type_result" name="filter_dish_type" class="form-select">
@@ -92,10 +92,8 @@
                             @endforeach
                         </select>
                     </form>
-                    <div class="section-heading">
-                        <h1>Dishes</h1>
-                    </div>
-                </div>
+                   
+                
             </div>
             <div class="row">
                 <div class="col-lg-12">

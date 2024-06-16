@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Weather;
 use App\Models\Reservation;
 use App\Models\Review;
-use App\Models\Menu;
+use App\Models\Dish;
+use App\Models\DishType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 class MainController extends Controller
@@ -21,8 +22,8 @@ class MainController extends Controller
             }
         }
         $reviews = Review::get(); 
-        $menu = Menu::all();
-        $dishTypes = Menu::select('type')->distinct()->get();
+        $menu = Dish::all();
+        $dishTypes = DishType::all();
        
         $reservationText = $this->generateReservationText();
     

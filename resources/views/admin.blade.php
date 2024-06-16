@@ -44,7 +44,8 @@
 			</li>
 			<li class="nav-item avt-wrapper">
 				<div class="avt dropdown">
-					<img src="assets/taut.png" alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+					<img src="{{ asset('assets/taut.png') }}" alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+
 					<ul id="user-menu" class="dropdown-menu">
 						<li class="dropdown-menu-item">
 							<a class="dropdown-menu-link" href="{{ route('profile.show') }}">

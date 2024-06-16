@@ -289,9 +289,9 @@ div.add{
   content: "";
   position: absolute;
   top: 50%;
-  width: calc(50% - 40px);
+  width: calc(50% - 60px);
   height: 0.5px;
-  background-color: #333;
+  background-color: #33333334;
   z-index: -1;
 }
 

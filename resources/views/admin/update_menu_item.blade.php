@@ -1,7 +1,7 @@
 @extends('admin')
 @section('menu') active @endsection
 @section('content')
-<div class="card out_menu"> 
+<div class="card out_menu" > 
     <div>
         <form action="{{ route('submit_update_dish', $menuitem->id) }}" method="post" enctype="multipart/form-data" class="menu_form">
             @if($errors->any())
@@ -15,7 +15,7 @@
             @endif
             @csrf    
             @method('PUT')
-            <base href="/public">
+            <script src="{{ asset('index.js') }}"></script>
             <div class="mb-3">
                 <label for="dish_name" class="form-label">Dish Name:</label>
                 <input type="text" id="dish_name" name="dish_name" class="navbar-search-input" value="{{ $menuitem->title }}" required>
@@ -117,8 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Initialize the toggle function on page load
-    toggleNewDishTypeInput();
 });
 </script>
 
