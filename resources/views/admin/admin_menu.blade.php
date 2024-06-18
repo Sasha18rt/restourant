@@ -51,49 +51,67 @@
             <button type="submit " class="btn btn-primary ">Add Dish</button>
         </form>
        
-        <div id="type_management_form" style="display:none; margin-top: 20px;">
-        <div class="mid">
-                        <h1>Type settings</h1>
-                    </div>
+        <div id="type_management_form" style="margin-top: 20px;">
+            <div class="mid">
+                <h1>Type settings</h1>
+            </div>
             <form id="add_type_form" class="menu_form" action="{{ route('add_new_dish_type') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label for="new_dish_type_input" class="form-label">New Dish Type:</label>
+                <input type="text" id="new_dish_type_input" name="new_dish_type" class="navbar-search-input" placeholder="New dish type">
+            </div>
+            <button type="submit" id="add_new_type_btn" class="btn btn-primary">Add New Type</button>
+        </form>
+            <form id="manage_type_form" class="menu_form" action="{{ route('manage_dish_type') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                    <label for="new_dish_type_input" class="form-label">New Dish Type:</label>
-                    <input type="text" id="new_dish_type_input" name="new_dish_type" class="navbar-search-input" placeholder="New dish type">
-                </div>
-                <button type="submit" id="add_new_type_btn" class="btn btn-primary">Add New Type</button>
-            </form>
-
-            <form id="delete_type_form" class="menu_form" action="{{ route('delete_dish_type') }}" method="post" enctype="multipart/form-data" style="margin-top: 20px;">
-                @csrf
-                <div class="mb-3">
-                    <label for="delete_dish_type_select" class="form-label">Delete Dish Type:</label>
-                    <select name="dish_type_id" class="form-select" id="delete_dish_type_select">
+                    <label for="manage_dish_type_select" class="form-label">Select Dish Type to Manage:</label>
+                    <select name="dish_type_id" class="form-select" id="manage_dish_type_select">
                         @foreach($dishTypes as $type)
                             <option value="{{ $type->id }}">{{ $type->type_name }}</option>
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="btn btn-delete">Delete Type</button>
+                <div class="mb-3">
+                    <label for="new_dish_type_name" class="form-label">New Dish Type Name:</label>
+                    <input type="text" id="new_dish_type_name" name="new_dish_type_name" class="navbar-search-input">
+                </div>
+                <div class="d-flex">
+                    <button type="submit" name="action" value="update" class="btn btn-primary" style="margin-right: 10px;">Update Type</button>
+                    <button type="submit" name="action" value="delete" class="btn  btn-delete">Delete Type</button>
+                </div>
             </form>
+
+            <div class="mid">
+                <h1>Reorder Types</h1>
+            </div>
+            <ul id="dish_type_list" class="list-group ">
+    @foreach($dishTypes as $type)
+        <li class="list-group-item card card-title" data-id="{{ $type->id }}">
+            {{ $type->type_name }}
+            <span class="drag-handle">⋮⋮</span>
+        </li>
+    @endforeach
+</ul>
+
+            <button id="save_order_btn" class="btn  btn-primary" style="margin: 20px 30px 10px 40%; ">Save Order</button>
         </div>
     </div>
     
     <section class="section" id="offers">
         <div class="container">
-        <h1 class="mid">Dishes</h1>
+            <h1 class="mid">Dishes</h1>
             <div class="row">
-                    <form id="filterForm">
-                        <label for="filter_dish_type_result" class="form-label">Filter by Dish type:</label>
-                        <select id="filter_dish_type_result" name="filter_dish_type" class="form-select">
-                            <option value="All">All</option>
-                            @foreach($dishTypes as $type)
-                                <option value="{{ $type->id }}">{{ $type->type_name }}</option>
-                            @endforeach
-                        </select>
-                    </form>
-                   
-                
+                <form id="filterForm">
+                    <label for="filter_dish_type_result" class="form-label">Filter by Dish type:</label>
+                    <select id="filter_dish_type_result" name="filter_dish_type" class="form-select">
+                        <option value="All">All</option>
+                        @foreach($dishTypes as $type)
+                            <option value="{{ $type->id }}">{{ $type->type_name }}</option>
+                        @endforeach
+                    </select>
+                </form>
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -129,6 +147,8 @@
                                                                     <button type="submit" class=" btn-delete">Delete</button>
                                                                 </form>
                                                                 <a href="{{ route('edit_menu_item', $menuItem->id) }}" class=" btn-update">Update</a>
+                                                                <a href="{{ route('edit_addons', $menuItem->id) }}" class="btn-add">Add-ons</a>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -149,6 +169,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('type_management_form').style.display = 'none';
+    
     document.getElementById('filter_dish_type_result').addEventListener('change', filterMenu);
     document.getElementById('gear_icon_btn').addEventListener('click', toggleTypeManagementForm);
 
@@ -171,8 +193,34 @@ document.addEventListener('DOMContentLoaded', function() {
         var typeManagementForm = document.getElementById('type_management_form');
         typeManagementForm.style.display = (typeManagementForm.style.display === 'none' || typeManagementForm.style.display === '') ? 'block' : 'none';
     }
+
+    // Initialize Sortable
+    var sortable = new Sortable(document.getElementById('dish_type_list'), {
+        animation: 150,
+        ghostClass: 'blue-background-class'
+    });
+
+    // Save order
+    document.getElementById('save_order_btn').addEventListener('click', function() {
+        var order = sortable.toArray();
+        fetch('{{ route('reorder_dish_types') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ order: order })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Order updated successfully!');
+            } else {
+                alert('Failed to update order.');
+            }
+        });
+    });
 });
+
 </script>
-
-
 @endsection

@@ -190,17 +190,23 @@
     </section>
 
 
-    <!-- ***** Reservation Area Ends ***** -->
-
-    <section class="section" id="menu">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="section-heading">
-                    <h1 class="mt-5">Menu</h1>
-                </div>
-            </div>
+<!-- Modal for dish details -->
+<div id="dish-details-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <img id="modal-dish-image" src="" alt="Dish Image" class="menu-image">
+        <div class="modal-text-content">
+            <h4 id="modal-dish-title"></h4>
+            <p id="modal-dish-description"></p>
+            <div id="modal-dish-price" class="modal-price"></div>
+            <h5 id="toppings-heading" class="toppings-heading" style="display: none;">Addons:</h5>
+            <div id="modal-dish-addons" class="modal-addons"></div>
         </div>
+    </div>
+</div>
+
+<section class="section" id="menu">
+    <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="heading-tabs text-center">
@@ -217,68 +223,72 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="tabs">
             <div class="col-lg-12">
-                <div class="row" id="tabs">
-                    <div class="col-lg-12">
-                        <section class="tabs-content" id="tab-All">
-                            @foreach($dishTypes as $type)
-                            <div class="menu-divider">{{ $type->type_name }}</div>
-                            @foreach($menu->where('type_id', $type->id)->chunk(2) as $key => $chunk)
-                            <article id='tabs-All-{{ $key + 1 }}'>
+                <section class="tabs-content" id="tab-All">
+                    @foreach($dishTypes as $type)
+                    <div class="menu-divider">{{ $type->type_name }}</div>
+                    @foreach($menu->where('type_id', $type->id)->chunk(2) as $key => $chunk)
+                    <article id='tabs-All-{{ $key + 1 }}'>
+                        <div class="row">
+                            @foreach($chunk as $index => $dish)
+                            <div class="col-lg-6">
                                 <div class="row">
-                                    @foreach($chunk as $index => $dish)
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="tab-item">
-                                                    <img src="{{ asset('foodimage/' . $dish->image) }}" alt="{{ $dish->title }}" class="menu-image">
-                                                    <h4>{{ $dish->title }}</h4>
-                                                    <p>{{ $dish->description }}</p>
-                                                    <div class="price">
-                                                        <h6>{{ $dish->price }}$</h6>
-                                                    </div>
-                                                </div>
+                                    <div class="col-lg-12">
+                                        <div class="tab-item"
+                                             data-title="{{ $dish->title }}"
+                                             data-description="{{ $dish->description }}"
+                                             data-price="{{ $dish->price }}$"
+                                             data-image="{{ asset('foodimage/' . $dish->image) }}"
+                                             data-addons="@foreach($dish->addOns as $addon){{ $addon->addon_name }}:{{ $addon->price }}$, @endforeach">
+                                            <img src="{{ asset('foodimage/' . $dish->image) }}" alt="{{ $dish->title }}" class="menu-image">
+                                            <h4>{{ $dish->title }}</h4>
+                                            <p>{{ $dish->description }}</p>
+                                            <div class="price">
+                                                <h6>{{ $dish->price }}$</h6>
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
                                 </div>
-                            </article>
+                            </div>
                             @endforeach
-                            @endforeach
-                        </section>
-
-                        @foreach($dishTypes as $type)
-                        <section class="tabs-content" id="tab-{{ $type->id }}" style="display:none;">
-                            <div class="menu-divider">{{ $type->type_name }}</div>
-                            @foreach($menu->where('type_id', $type->id)->chunk(2) as $key => $chunk)
-                            <article id='tabs-{{ $type->id }}-{{ $key + 1 }}'>
+                        </div>
+                    </article>
+                    @endforeach
+                    @endforeach
+                </section>
+                @foreach($dishTypes as $type)
+                <section class="tabs-content" id="tab-{{ $type->id }}" style="display:none;">
+                    <div class="menu-divider">{{ $type->type_name }}</div>
+                    @foreach($menu->where('type_id', $type->id)->chunk(2) as $key => $chunk)
+                    <article id='tabs-{{ $type->id }}-{{ $key + 1 }}'>
+                        <div class="row">
+                            @foreach($chunk as $index => $dish)
+                            <div class="col-lg-6">
                                 <div class="row">
-                                    @foreach($chunk as $index => $dish)
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="tab-item">
-                                                    <img src="{{ asset('foodimage/' . $dish->image) }}" alt="{{ $dish->title }}" class="menu-image">
-                                                    <h4>{{ $dish->title }}</h4>
-                                                    <p>{{ $dish->description }}</p>
-                                                    <div class="price">
-                                                        <h6>{{ $dish->price }}$</h6>
-                                                    </div>
-                                                </div>
+                                    <div class="col-lg-12">
+                                        <div class="tab-item"
+                                             data-title="{{ $dish->title }}"
+                                             data-description="{{ $dish->description }}"
+                                             data-price="{{ $dish->price }}$"
+                                             data-image="{{ asset('foodimage/' . $dish->image) }}"
+                                             data-addons="@foreach($dish->addOns as $addon){{ $addon->addon_name }}:{{ $addon->price }}$, @endforeach">
+                                            <img src="{{ asset('foodimage/' . $dish->image) }}" alt="{{ $dish->title }}" class="menu-image">
+                                            <h4>{{ $dish->title }}</h4>
+                                            <p>{{ $dish->description }}</p>
+                                            <div class="price">
+                                                <h6>{{ $dish->price }}$</h6>
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
                                 </div>
-                            </article>
+                            </div>
                             @endforeach
-                        </section>
-                        @endforeach
-
-                    </div>
-                </div>
+                        </div>
+                    </article>
+                    @endforeach
+                </section>
+                @endforeach
             </div>
         </div>
     </div>
@@ -322,8 +332,65 @@ window.onload = function() {
     var firstLink = document.querySelector('.heading-tabs a');
     showTab('All', firstLink);
 };
-</script>
 
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.tab-item');
+    const modal = document.getElementById('dish-details-modal');
+    const closeModalButton = document.querySelector('.close-modal');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function(event) {
+            const title = this.dataset.title;
+            const description = this.dataset.description;
+            const price = this.dataset.price;
+            const image = this.dataset.image;
+            const addons = this.dataset.addons;
+
+            document.getElementById('modal-dish-title').textContent = title;
+            document.getElementById('modal-dish-description').textContent = description;
+            document.getElementById('modal-dish-price').textContent = price;
+            document.getElementById('modal-dish-image').src = image;
+
+            const addonsContainer = document.getElementById('modal-dish-addons');
+            addonsContainer.innerHTML = '';
+
+            const addonsList = addons.split(',').filter(Boolean).filter(addon => addon.trim() !== '');
+            if (addonsList.length > 0) {
+                document.getElementById('toppings-heading').style.display = 'block';
+                addonsList.forEach(addon => {
+                    const [addonName, addonPrice] = addon.split(':');
+                    const addonElement = document.createElement('div');
+                    addonElement.innerHTML = `<span>${addonName}</span> <span style="float: right;">${addonPrice}</span>`;
+                    addonsContainer.appendChild(addonElement);
+                });
+            } else {
+                document.getElementById('toppings-heading').style.display = 'none';
+            }
+
+            modal.style.display = 'block';
+        });
+
+        tab.addEventListener('mouseover', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+
+        tab.addEventListener('mouseout', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+
+    closeModalButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+</script>
 
 <h1 class="text-center mt-5">All Reviews
   

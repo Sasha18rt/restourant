@@ -11,4 +11,9 @@ class Dish extends Model
 
     protected $fillable = ['title', 'price', 'image', 'description', 'type_id'];
     protected $table = 'dishes';
+
+    public function addOns()
+    {
+        return $this->belongsToMany(AddOn::class, 'dish_add_ons', 'id', 'addon_id');
+    }
 }

@@ -23,7 +23,7 @@ class MainController extends Controller
         }
         $reviews = Review::get(); 
         $menu = Dish::all();
-        $dishTypes = DishType::all();
+        $dishTypes = DishType::orderBy('order')->get(); 
        
         $reservationText = $this->generateReservationText();
     
@@ -34,6 +34,7 @@ class MainController extends Controller
             'dishTypes' => $dishTypes
         ]);
     }
+    
     
     protected function generateReservationText() {
         list($weatherCondition, $temperature) = Weather::getWeather();
@@ -97,10 +98,9 @@ class MainController extends Controller
         if (!Auth::check()) {
             Session::flash('error', 'Please log in to make a reservation!');
             return redirect()->route('home')
-    ->with('success', 'Reservation submitted successfully!') // Success message
-    ->with('scrollTo', '#reservation'); // Scrolling message
-    // Optionally, pass $validator for scrolling logic on success
-    // ->with('validator', $validator); // Pass $validator if needed
+    ->with('success', 'Reservation submitted successfully!') 
+    ->with('scrollTo', '#reservation'); 
+
 
         }
     

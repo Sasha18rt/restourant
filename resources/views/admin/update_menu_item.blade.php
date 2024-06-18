@@ -37,9 +37,8 @@
                     @foreach($dishTypes as $type)
                         <option value="{{ $type->id }}" {{ ($menuitem->type_id == $type->id) ? 'selected' : '' }}>{{ $type->type_name }}</option>
                     @endforeach
-                    <option value="new">Add new type</option>
+                    
                 </select>
-                <input type="text" id="new_dish_type" name="new_dish_type" class="form-control mt-2" style="display:none;" placeholder="New dish type">
             </div>
 
             <div class="mb-3">
@@ -102,22 +101,5 @@
     </section>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('dish_type_select').addEventListener('change', toggleNewDishTypeInput);
-
-    function toggleNewDishTypeInput() {
-        var dishTypeSelect = document.getElementById('dish_type_select');
-        var newDishTypeInput = document.getElementById('new_dish_type');
-
-        if (dishTypeSelect.value === 'new') {
-            newDishTypeInput.style.display = 'block';
-        } else {
-            newDishTypeInput.style.display = 'none';
-        }
-    }
-
-});
-</script>
 
 @endsection

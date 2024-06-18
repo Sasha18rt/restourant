@@ -63,7 +63,7 @@
 
 
 .btn-update{
-	background-color: rgb(49, 49, 230); /* Danger color */
+	background-color: rgb(49, 49, 230); 
     color: #ffffff; 
     padding: 8px 16px; 
     border: none; 
@@ -74,6 +74,23 @@
 }
 .btn-update:hover{
 	background-color: rgb(37, 37, 161); 
+}
+.btn-add{
+	background-color: #ff7300; 
+    color: #ffffff; 
+    padding: 8px 16px; 
+	margin-left: 10px;
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    text-decoration: none; 
+
+}
+
+.btn-add:hover{
+	background-color: #d05e01; 
+
 }
 .user-search .search-input {
 	
@@ -243,6 +260,7 @@ body {
 }
 .slidebar{
 	top:0;
+	
 }
 .logo {
 	height: 60px;
@@ -345,7 +363,7 @@ body {
 
 
 .menu-card {
-    width: 100%; /* Ensure the card takes the full width of its container */
+    width: 100%; 
 
     flex-direction: column;
     border-radius: 8px;
@@ -438,6 +456,7 @@ body {
 .scrollbar-hover:hover::-webkit-scrollbar {
 	display: block;
 }
+
 
 .overlay-scrollbar::-webkit-scrollbar-thumb {
 	background-color: rgba(0,0,0,0.4);
@@ -631,7 +650,7 @@ body {
 		
 	  }
 	  .menu_form{
-		margin-left: 90px;
+		margin-left: 40px;
 		margin-top: 40px;
 		margin-bottom: 40px;
 		margin-right: 40px;
@@ -808,8 +827,10 @@ table th {
 
 .form-label {
     font-weight: bold;
-	
+    display: block; 
+    margin-bottom: 8px; 
 }
+
 
 .form-control {
     width: 100%;
@@ -837,8 +858,8 @@ textarea {
     background: var(--second-bg-color);
 	border: none;
 	margin-right: 100px;
-	padding: 10px; /* Add padding */
-    margin-bottom: 15px; /* Add margin-bottom */
+	padding: 10px;
+    margin-bottom: 15px; 
 	width: 100%;
 	outline: none;
 	height: 150px;
@@ -849,8 +870,8 @@ textarea {
 input {
 	background: var(--second-bg-color);
 	border: none;
-	padding: 10px; /* Add padding */
-    margin-bottom: 15px; /* Add margin-bottom */
+	padding: 10px; 
+    margin-bottom: 15px; 
 	
 	outline: none;
 	color: var(--main-color);
@@ -914,6 +935,46 @@ input {
     margin-right: 20px;
     border-radius: 5px;
   }
+  .list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    background-color: var(--light-background);
+    border: 1px solid var(--light-second-background); 
+    border-radius: 5px;
+    cursor: move;
+    transition: background-color 0.2s ease;
+}
+
+.list-group-item.card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item.card:hover {
+    background-color: var(--light-second-background); 
+}
+
+.blue-background-class {
+    background-color: #e0f7fa !important;
+}
+
+.chosen-item {
+    opacity: 0;
+}
+
+.save-order-btn {
+    margin: 20px 30% 10px 10px;
+}
+
+.drag-handle {
+    cursor: move;
+    margin-left: 10px;
+    font-size: 20px;
+    color: var(--primary-color); 
+}
+
   .mb-3 img{
 	float: left;
     width: 230px;
@@ -922,7 +983,10 @@ input {
     border-radius: 5px;
   }
   
-  
+  .mb-3 {
+
+	margin-top: 10px;
+  }
   
   .tabs-content p {
     margin-right: 100px;
@@ -935,5 +999,23 @@ input {
   .tabs-content .right-list {
     margin-left: 15px;
   }
-  
-  
+  .addon-item {
+    padding: 10px;
+    border: 1px solid var(--light-second-color);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 40%; 
+    margin-left: -10px; 
+}
+
+.addon-item label {
+    margin-right: 10px;
+}
+
+.addon-item button {
+    margin-left: 10px;
+}
+

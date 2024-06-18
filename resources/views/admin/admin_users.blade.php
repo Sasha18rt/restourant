@@ -24,10 +24,10 @@
     <tbody>
         @foreach ($users as $user)
         <tr>
-            <td>{{ $user->id }}</td> <!-- Поле 'id' на початку -->
+            <td>{{ $user->id }}</td> 
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
-            <td>{{ $user->created_at }}</td> <!-- Додано поле 'created_at' -->
+            <td>{{ $user->created_at }}</td> 
             <td>
                 @if($user->usertype == '0')
                 <a href="{{ url('/deleteuser', $user->id) }}" class="btn btn-delete-user">Delete</a>
@@ -60,46 +60,3 @@
 
 
 
-<!-- 
-<section class="card">
-<div class="d-flex ">
-    <h2 >Users</h2>
-    <div >
-    <form class="navbar-search search-form" action="{{ route('search.users') }}" method="GET">
-    <input type="text" name="search" placeholder="Search Users" class="navbar-search-input">
-    <i class="fas fa-search search-btn" onclick="submitSearchForm()"></i>
-</form>
-<script>
-    function submitSearchForm() {
-        document.querySelector('.search-form').submit(); 
-    }
-</script>
-    </div>
-  </div>
-<table id="example" class="display" style="width:100%">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Function</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($users as $user)
-        <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>
-                @if($user->usertype == '0')
-                <a href="{{ url('/deleteuser', $user->id) }}" class="btn btn-delete">Delete</a>
-                @else
-                <span class="text-muted">Not Allowed</span>
-                @endif
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-  
-</section> -->

@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\Reservation;
 use App\Models\Dish;
 use App\Models\DishType;
+use App\Models\AddOn;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -15,7 +16,7 @@ class AdminController extends Controller
     public function amenu()
     {
         $menu = Dish::all();
-        $dishTypes = DishType::all();
+        $dishTypes = DishType::orderBy('order')->get(); 
         
         return view('admin.admin_menu', compact('dishTypes', 'menu'));
     }
@@ -33,20 +34,46 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function deleteDishType(Request $request)
-    {
+    public function manageDishType(Request $request) {
         $request->validate([
             'dish_type_id' => 'required|exists:dish_types,id',
         ]);
-    
-        $dishType = DishType::find($request->dish_type_id);
-        if ($dishType) {
+
+        if ($request->action == 'delete') {
+            $dishType = DishType::findOrFail($request->dish_type_id);
             $dishType->delete();
-            return redirect()->back()->with('success', 'Dish type deleted successfully.');
+            return redirect()->back()->with('success', 'Dish type deleted successfully!');
         }
-    
-        return redirect()->back()->with('error', 'Failed to delete dish type.');
+
+        if ($request->action == 'update') {
+            $request->validate([
+                'new_dish_type_name' => 'required|string|max:255',
+            ]);
+
+            $dishType = DishType::findOrFail($request->dish_type_id);
+            $dishType->type_name = $request->new_dish_type_name;
+            $dishType->save();
+            return redirect()->back()->with('success', 'Dish type updated successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Invalid action!');
     }
+
+    public function reorderDishTypes(Request $request) {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'integer|exists:dish_types,id',
+        ]);
+
+        foreach ($request->order as $index => $id) {
+            $dishType = DishType::findOrFail($id);
+            $dishType->order = $index + 1;
+            $dishType->save();
+        }
+
+        return response()->json(['success' => true]);
+    }
+    
     
 
     public function ausers()
@@ -199,10 +226,10 @@ class AdminController extends Controller
                              ->orWhere('message', 'like', "%{$searchTerm}%")
                              ->get();
         } else {
-            $reviews = Review::all(); // No search term, retrieve all reviews
+            $reviews = Review::all(); 
         }
 
-        return view('admin.admin_reviews', compact('reviews')); // Pass the filtered reviews to the view
+        return view('admin.admin_reviews', compact('reviews')); 
     }
 
     public function delete_review($id)
@@ -216,4 +243,52 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Review not found.');
         }
     }
+
+
+
+
+
+
+
+    //ADDONS
+
+    public function editAddOns($id)
+{
+    $dish = Dish::findOrFail($id);
+    $addOns = AddOn::all();
+    return view('admin.admin_edit_addons', compact('dish', 'addOns'));
+}
+
+public function updateAddOns(Request $request, $id)
+{
+    $dish = Dish::findOrFail($id);
+
+    if ($request->has('add_ons')) {
+        $dish->addOns()->sync($request->add_ons);
+    } else {
+        $dish->addOns()->detach();
+    }
+
+    return redirect()->route('edit_addons', $id)->with('success', 'Add-ons updated successfully.');
+}
+
+public function store(Request $request)
+{
+    $request->validate([
+        'addon_name' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+    ]);
+
+    AddOn::create($request->all());
+
+    return redirect()->back()->with('success', 'Add-on created successfully.');
+}
+
+public function destroy($id)
+{
+    $addOn = AddOn::findOrFail($id);
+    $addOn->delete();
+
+    return redirect()->back()->with('success', 'Add-on deleted successfully.');
+}
 }

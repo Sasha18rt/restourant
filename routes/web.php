@@ -59,6 +59,14 @@ Route::post('/add-new-dish-type', [AdminController::class, 'addNewDishType'])->n
 Route::post('/delete-dish-type', [AdminController::class, 'deleteDishType'])->name('delete_dish_type');
 
 
+Route::post('/manage-dish-type', [AdminController::class, 'manageDishType'])->name('manage_dish_type');
+Route::post('/reorder-dish-types', [AdminController::class, 'reorderDishTypes'])->name('reorder_dish_types');
+
+Route::get('/edit_addons/{id}', [AdminController::class, 'editAddOns'])->name('edit_addons');
+Route::post('/edit_addons/{id}', [AdminController::class, 'updateAddOns'])->name('update_addons');
+Route::post('/addons', [AdminController::class, 'store'])->name('addons.store');
+Route::delete('/addons/{id}', [AdminController::class, 'destroy'])->name('addons.destroy');
+
 Route::get('/edit-menu-item/{id}', [AdminController::class, 'update_menu_item'])->name('edit_menu_item');
 Route::put('/update-dish/{id}', [AdminController::class, 'updateDish'])->name('submit_update_dish');
 
