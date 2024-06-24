@@ -48,7 +48,7 @@
                     <div class="section-heading">
                           <h1 class="color">Welcome to name</h1>
                       </div>
-                      <p style="color:black;">Experience culinary excellence at name, where every dish is a masterpiece crafted with passion and care. Our menu features a delightful fusion of flavors, combining the finest ingredients with innovative techniques to tantalize your taste buds.<br><br>Indulge in a dining experience like no other as our expert chefs create culinary wonders that will leave you craving for more. Whether you're craving classic comfort food or adventurous gastronomic delights, we have something to satisfy every palate.<br><br>Join us at [Your Restaurant Name] and embark on a culinary journey that promises to leave a delicious memory you'll cherish forever.</p>
+                      <p style="color:black;">Experience culinary excellence at name, where every dish is a masterpiece crafted with passion and care. Our menu features a delightful fusion of flavors, combining the finest ingredients with innovative techniques to tantalize your taste buds.<br><br>Indulge in a dining experience like no other as our expert chefs create culinary wonders that will leave you craving for more. Whether you're craving classic comfort food or adventurous gastronomic delights, we have something to satisfy every palate.<br><br>Join us at Name and embark on a culinary journey that promises to leave a delicious memory you'll cherish forever.</p>
                       <div class="row">
 
                             <div class="col-4">

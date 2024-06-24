@@ -1,0 +1,69 @@
+version: '3.5'
+
+services:
+  resturant-prod-app:
+    build:
+      context: '.'
+      args:
+        uid: 1000
+    container_name: resturant-prod-app
+    ports:
+      - 80:80
+    environment:
+      - APACHE_RUN_USER=#1000
+      - APACHE_RUN_GROUP=#1000
+    volumes:
+      - .:/var/www/html
+    restart: always
+    networks:
+      backend-laraavel:
+        aliases:
+          - app
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ./run/var:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      backend-laraavel:
+        aliases:
+          - mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 300M
+    depends_on:
+      - mysql
+    restart: always
+    ports:
+      - 8081:80
+    networks:
+      backend-laraavel:
+        aliases:
+          - phpmyadmin
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PORT_NUMBER=7000
+    restart: always
+    ports:
+      - '7000:7000'
+    networks:
+      backend-laraavel:
+        aliases:
+          - redis
+
+networks:
+  backend-laraavel:
+    name: backend-laraavel-network
